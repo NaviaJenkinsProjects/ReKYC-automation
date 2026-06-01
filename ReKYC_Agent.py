@@ -234,6 +234,137 @@ REPORT_HIDDEN_PASS_STEP_NUMBERS = {
     25,  # DIS Slip section navigation
 }
 
+POST_SERVICE_STEP_NUMBERS = {70, 71, 72, 73, 74}
+POST_SERVICE_CONTEXT_SEQUENCE = ["Email", "Mobile No", "Nominee", "Segment"]
+POST_SERVICE_META = {
+    "Email": {
+        70: ("POS-EMAIL-SIGN-001", "Email", "Signature Upload", "Signature.png", "Email signature should upload successfully"),
+        72: ("POS-EMAIL-IPV-001", "Email", "IPV", "Fake blink camera", "Email IPV should capture/advance successfully"),
+        71: ("POS-EMAIL-PDF-001", "Email", "Unsigned KYC PDF", "Generated PDF", "Email unsigned KYC PDF page should load"),
+        73: ("POS-EMAIL-ESIGN-001", "Email", "Proceed to eSign", "Continue to eSign", "Email flow should open Protean Aadhaar eSign"),
+        74: ("POS-EMAIL-ESIGN-002", "Email", "Aadhaar OTP", "Valid OTP from Yopmail", "Email eSign OTP should submit and place request"),
+    },
+    "Mobile No": {
+        70: ("POS-MOB-SIGN-001", "Mobile No", "Signature Upload", "Signature.png", "Mobile signature should upload successfully"),
+        72: ("POS-MOB-IPV-001", "Mobile No", "IPV", "Fake blink camera", "Mobile IPV should capture/advance successfully"),
+        71: ("POS-MOB-PDF-001", "Mobile No", "Unsigned KYC PDF", "Generated PDF", "Mobile unsigned KYC PDF page should load"),
+        73: ("POS-MOB-ESIGN-001", "Mobile No", "Proceed to eSign", "Continue to eSign", "Mobile flow should open Protean Aadhaar eSign"),
+        74: ("POS-MOB-ESIGN-002", "Mobile No", "Aadhaar OTP", "Valid OTP from Yopmail", "Mobile eSign OTP should submit and place request"),
+    },
+    "Nominee": {
+        70: ("POS-NOM-SIGN-001", "Nominee", "Signature Upload", "Signature.png", "Nominee signature should upload successfully"),
+        72: ("POS-NOM-IPV-001", "Nominee", "IPV", "Fake blink camera", "Nominee IPV should capture/advance successfully"),
+        71: ("POS-NOM-PDF-001", "Nominee", "Unsigned KYC PDF", "Generated PDF", "Nominee unsigned KYC PDF page should load"),
+        73: ("POS-NOM-ESIGN-001", "Nominee", "Proceed to eSign", "Continue to eSign", "Nominee flow should open Protean Aadhaar eSign"),
+        74: ("POS-NOM-ESIGN-002", "Nominee", "Aadhaar OTP", "Valid OTP from Yopmail", "Nominee eSign OTP should submit and place request"),
+    },
+    "Segment": {
+        70: ("POS-SEG-SIGN-001", "Segment", "Signature Upload", "Signature.png", "Segment signature should upload successfully"),
+        72: ("POS-SEG-IPV-001", "Segment", "IPV", "Fake blink camera", "Segment IPV should capture/advance successfully"),
+        71: ("POS-SEG-PDF-001", "Segment", "Unsigned KYC PDF", "Generated PDF", "Segment unsigned KYC PDF page should load"),
+        73: ("POS-SEG-ESIGN-001", "Segment", "Proceed to eSign", "Continue to eSign", "Segment flow should open Protean Aadhaar eSign"),
+        74: ("POS-SEG-ESIGN-002", "Segment", "Aadhaar OTP", "Valid OTP from Yopmail", "Segment eSign OTP should submit and place request"),
+    },
+}
+
+# Report labels aligned with ReKYC_Test_Cases_v4.xlsx.
+# These mappings affect only the mail/Teams report table; they do not change test execution.
+V4_REPORT_STEP_META = {
+    1: ("NEG-LOGIN-001", "Login Page", "UCC + DOB", "Blank UCC, Blank DOB", "Validation message; stay on login page"),
+    2: ("NEG-LOGIN-002", "Login Page", "UCC", "Invalid UCC (INVALID123)", "Validation/error message; stay on login page"),
+    3: ("NEG-LOGIN-003", "Login Page", "UCC + DOB", "Valid UCC + Wrong DOB", "Login fails; error shown; stay on login page"),
+    5: ("NEG-LOGIN-004", "Login Page", "UCC", "Blank UCC + Valid DOB", "Validation message; stay on login page"),
+    4: ("POS-LOGIN-006", "Login Page", "Submit", "Valid UCC + DOB", "Proceeds to OTP page"),
+    6: ("POS-LOGIN-002", "Login Page", "Page Refresh", "Refresh before positive flow", "Page reloads cleanly"),
+    7: ("POS-LOGIN-003", "Login Page", "UCC field", "Valid UCC", "UCC field accepts input"),
+    8: ("POS-LOGIN-004", "Login Page", "DOB Picker", "Click DOB field", "DOB calendar opens"),
+    9: ("POS-LOGIN-005", "Login Page", "DOB Picker", "Valid DOB", "DOB selected successfully"),
+    10: ("POS-LOGIN-006", "Login Page", "Submit", "Valid UCC + DOB", "Proceeds to OTP page"),
+    11: ("POS-LOGIN-007", "Login Page", "OTP Page URL", "Post-login redirect", "URL confirms OTP page loaded"),
+    12: ("NEG-OTP-001", "OTP Verification", "OTP Field", "Blank OTP", "Validation shown; stays on OTP page"),
+    13: ("NEG-OTP-002", "OTP Verification", "OTP Field", "Wrong OTP (000000)", "Error message; stays on OTP page"),
+    14: ("NEG-OTP-003", "OTP Verification", "OTP Field", "Short OTP (123)", "Validation; stays on OTP page"),
+    15: ("POS-OTP-001", "OTP Verification", "OTP Field", "Valid OTP from Yopmail", "Login succeeds; dashboard loads"),
+    16: ("POS-OTP-002", "OTP Verification", "Submit OTP", "Submit valid OTP", "Proceeds past OTP page"),
+    17: ("POS-DASH-001", "Dashboard", "Dashboard URL", "Post-OTP dashboard", "Dashboard loads successfully"),
+    18: ("POS-SECT-001", "Dashboard", "Email section", "Click Email", "Email section opens"),
+    19: ("POS-SECT-002", "Dashboard", "Mobile section", "Click Mobile No", "Mobile section opens"),
+    20: ("POS-SECT-003", "Dashboard", "Address section", "Click Change of Address", "Address section opens"),
+    21: ("POS-SECT-004", "Dashboard", "Nominee section", "Click Nominee", "Nominee section opens"),
+    22: ("POS-SECT-005", "Dashboard", "Bank section", "Click Bank", "Bank section opens"),
+    23: ("POS-SECT-006", "Dashboard", "Segment section", "Click Segment", "Segment section opens"),
+    24: ("POS-SECT-007", "Dashboard", "Income Declaration", "Click Income Declaration", "Section opens"),
+    25: ("POS-SECT-008", "Dashboard", "DIS Slip", "Click Dis Slip Req", "Section opens"),
+    26: ("POS-SECT-009", "Dashboard", "Service Status", "Click Service Status", "Section opens with status data"),
+    27: ("POS-SECT-010", "Dashboard", "Documents", "Click Documents", "Documents section loads"),
+    28: ("POS-DOC-002", "Documents", "View proof 1", "View uploaded document 1", "Document opens in viewer"),
+    29: ("POS-DOC-003", "Documents", "View proof 2", "View uploaded document 2", "Document opens in viewer"),
+    60: ("NEG-EMAIL-001", "Email", "Declaration checkbox", "No declaration checked", "Validation: must accept declaration before sending OTP"),
+    61: ("NEG-EMAIL-002", "Email", "Existing email OTP", "Blank OTP", "Validation shown; stays on OTP page"),
+    62: ("NEG-EMAIL-003", "Email", "Existing email OTP", "Wrong OTP (000000)", "Error shown; stays on OTP page"),
+    63: ("NEG-EMAIL-004", "Email", "Existing email OTP", "Short OTP (123)", "Validation shown; stays on OTP page"),
+    129: ("NEG-EMAIL-005", "Email", "New Email", "Existing linked email", "Duplicate/linked email validation should display"),
+    69: ("POS-EMAIL-001", "Email", "Email OTP flow", "Valid OTP from Yopmail", "OTP verified; new email input shown"),
+    64: ("NEG-MOB-001", "Mobile No", "Declaration checkbox", "No declaration checked", "Validation: must accept declaration before sending OTP"),
+    65: ("NEG-MOB-002", "Mobile No", "Existing mobile OTP", "Blank OTP", "Validation shown; stays on OTP page"),
+    66: ("NEG-MOB-003", "Mobile No", "Existing mobile OTP", "Wrong OTP (000000)", "Error shown; stays on OTP page"),
+    67: ("NEG-MOB-004", "Mobile No", "Existing mobile OTP", "Short OTP (123)", "Validation shown; stays on OTP page"),
+    130: ("NEG-MOB-005", "Mobile No", "New Mobile", "Existing linked mobile", "Duplicate/linked mobile validation should display"),
+    68: ("POS-MOB-001", "Mobile No", "Mobile OTP flow", "Valid OTP from Yopmail", "OTP verified; new mobile input shown"),
+    77: ("POS-ADDR-002", "Change of Address", "Aadhaar OTP", "Valid Aadhaar", "Address updated successfully"),
+    32: ("NEG-NOM-002", "Nominee", "Nominee form", "Blank form submission", "Required field validations shown"),
+    33: ("NEG-NOM-003", "Nominee", "PAN/Aadhaar", "Invalid value (123)", "Validation: invalid PAN/Aadhaar"),
+    35: ("NEG-NOM-004", "Nominee", "Mobile", "Invalid mobile (123)", "Validation: invalid mobile"),
+    37: ("NEG-NOM-005", "Nominee", "Share %", "Over 100% (150)", "Validation: cannot exceed 100%"),
+    38: ("NEG-NOM-006", "Nominee", "DOB", "Future DOB (01-01-2099)", "Validation: future DOB not allowed"),
+    39: ("NEG-NOM-007", "Nominee", "Email", "Invalid email (bad-email)", "Validation: invalid email"),
+    40: ("NEG-NOM-008", "Nominee", "Minor + Guardian", "Minor without guardian", "Validation: guardian required for minor"),
+    97: ("NEG-NOM-001", "Nominee", "Declaration checkbox", "No declaration selected", "Validation: must accept declaration"),
+    41: ("POS-NOM-001", "Nominee", "Valid nominee", "Complete valid nominee form", "Nominee saved successfully"),
+    45: ("NEG-BANK-002", "Bank", "Proof", "Submit without bank proof", "Validation: proof required"),
+    46: ("NEG-BANK-001", "Bank", "Account + IFSC", "Invalid account and IFSC", "Validation for invalid account/IFSC"),
+    50: ("POS-BANK-001", "Bank", "Valid bank details", "Complete valid bank + proof", "Bank account added successfully"),
+    108: ("POS-SEG-001", "Segment", "BSE derivative", "Enable BSE derivative", "Segment activated successfully"),
+    114: ("NEG-SEG-001", "Segment", "No change", "Submit without segment change", "Validation: no change detected"),
+    115: ("NEG-SEG-002", "Segment", "BFO checkbox", "Enable BFO without MTF terms", "Validation: must accept MTF terms"),
+    126: ("NEG-INC-001", "Income Declaration", "Income slab", "Submit without selecting slab", "Validation: income slab required"),
+    125: ("POS-INC-001", "Income Declaration", "Update slab", "Select valid income slab", "Income declaration updated successfully"),
+    127: ("NEG-DIS-001", "Dis Slip Req", "Declaration", "Proceed without declaration", "Validation: checkbox required"),
+}
+
+STEP_META.update(V4_REPORT_STEP_META)
+
+POST_SERVICE_META.update({
+    "Email": {
+        70: ("EMAIL-POS-SVC-001", "Email", "Signature", "Upload signature image", "Signature accepted and saved"),
+        72: ("EMAIL-POS-SVC-002", "Email", "IPV", "Liveness capture (blink detection)", "IPV liveness captured successfully"),
+        71: ("EMAIL-POS-SVC-003", "Email", "KYC PDF", "View unsigned KYC PDF", "PDF opens in new tab"),
+        73: ("EMAIL-POS-SVC-004", "Email", "eSign", "Proceed to Aadhaar eSign", "Aadhaar eSign page opens"),
+        74: ("EMAIL-POS-SVC-005", "Email", "eSign OTP", "Complete Aadhaar eSign OTP", "eSign completed successfully"),
+    },
+    "Mobile No": {
+        70: ("MOB-POS-SVC-001", "Mobile No", "Signature", "Upload signature image", "Signature accepted and saved"),
+        72: ("MOB-POS-SVC-002", "Mobile No", "IPV", "Liveness capture (blink detection)", "IPV liveness captured successfully"),
+        71: ("MOB-POS-SVC-003", "Mobile No", "KYC PDF", "View unsigned KYC PDF", "PDF opens in new tab"),
+        73: ("MOB-POS-SVC-004", "Mobile No", "eSign", "Proceed to Aadhaar eSign", "Aadhaar eSign page opens"),
+        74: ("MOB-POS-SVC-005", "Mobile No", "eSign OTP", "Complete Aadhaar eSign OTP", "eSign completed successfully"),
+    },
+    "Nominee": {
+        70: ("NOM-POS-SVC-001", "Nominee", "Signature", "Upload signature image", "Signature accepted and saved"),
+        72: ("NOM-POS-SVC-002", "Nominee", "IPV", "Liveness capture (blink detection)", "IPV liveness captured successfully"),
+        71: ("NOM-POS-SVC-003", "Nominee", "KYC PDF", "View unsigned KYC PDF", "PDF opens in new tab"),
+        73: ("NOM-POS-SVC-004", "Nominee", "eSign", "Proceed to Aadhaar eSign", "Aadhaar eSign page opens"),
+        74: ("NOM-POS-SVC-005", "Nominee", "eSign OTP", "Complete Aadhaar eSign OTP", "eSign completed successfully"),
+    },
+    "Segment": {
+        70: ("SEG-POS-SVC-001", "Segment", "Signature", "Upload signature image", "Signature accepted and saved"),
+        72: ("SEG-POS-SVC-002", "Segment", "IPV", "Liveness capture (blink detection)", "IPV liveness captured successfully"),
+        71: ("SEG-POS-SVC-003", "Segment", "KYC PDF", "View unsigned KYC PDF", "PDF opens in new tab"),
+        73: ("SEG-POS-SVC-004", "Segment", "eSign", "Proceed to Aadhaar eSign", "Aadhaar eSign page opens"),
+        74: ("SEG-POS-SVC-005", "Segment", "eSign OTP", "Complete Aadhaar eSign OTP", "eSign completed successfully"),
+    },
+})
+
 
 def python_has_pytest(python_exe):
     try:
@@ -322,18 +453,47 @@ def get_report_step_numbers(full_flow=False):
     return [step for step in STEP_META if step not in DISABLED_STEP_NUMBERS]
 
 
+def report_meta_for_step(step, full_flow=False):
+    report_meta = step.get("_report_meta") if isinstance(step, dict) else None
+    if report_meta:
+        return tuple(report_meta)
+    return get_report_meta(step.get("step", 0), full_flow)
+
+
 def unique_step_results(step_results):
-    unique = []
+    results = []
     seen = set()
+    service_context_index = 0
+    service_steps_seen_in_context = set()
+
     for step in step_results:
         step_num = step.get("step")
         if step_num in REPORT_HIDDEN_PASS_STEP_NUMBERS and step.get("status") == "PASS":
             continue
-        if step_num in seen:
+
+        row = dict(step)
+        if step_num in POST_SERVICE_STEP_NUMBERS:
+            if step_num == 70 and service_steps_seen_in_context:
+                service_context_index += 1
+                service_steps_seen_in_context = set()
+
+            context = POST_SERVICE_CONTEXT_SEQUENCE[
+                min(service_context_index, len(POST_SERVICE_CONTEXT_SEQUENCE) - 1)
+            ]
+            row["_report_meta"] = POST_SERVICE_META.get(context, {}).get(step_num, get_meta(step_num))
+            service_steps_seen_in_context.add(step_num)
+            results.append(row)
             continue
+
+        if step_num in seen:
+            duplicate = dict(row)
+            duplicate["_report_meta"] = get_meta(step_num)
+            results.append(duplicate)
+            continue
+
         seen.add(step_num)
-        unique.append(step)
-    return unique
+        results.append(row)
+    return results
 
 
 class ReKYC_Agent:
@@ -583,8 +743,7 @@ class ReKYC_Agent:
         # Add failed step details
         failed_steps = [s for s in report_step_results if s.get("status") == "FAIL"]
         for s in failed_steps:
-            step_num = s.get("step", 0)
-            tc_id, stage, _, _, _ = get_report_meta(step_num, full_flow)
+            tc_id, stage, _, _, _ = report_meta_for_step(s, full_flow)
             reason = str(s.get("reason", "")).strip()[:100] or "No reason captured"
             facts.append({"title": tc_id, "value": f"{stage} -- {reason}"})
 
@@ -664,9 +823,10 @@ class ReKYC_Agent:
 
         print("  [i] EMAIL TRIGGER STARTED")
 
-        sender   = "praveenvelu262001@gmail.com"
-        password = os.environ.get("GMAIL_APP_PASSWORD", "uimq siiu sqja asrj")
-        receiver = ["miruthulak21@gmail.com", "elamukil@navia.co.in", "praveenvelu262001@gmail.com"]
+        sender   = "aialerts@navia.co.in"
+        username = "emailapikey"
+        password = "PHtE6r1eS7jqiG998kUH7afqRZKmN4gtrrw1KQQTt4sTDfJRS01U+d8qlTCwqU0sAPJCRqHKmY1p4rqb4e+Ed26/YW8ZDWqyqK3sx/VYSPOZsbq6x00auVwYdELbVIXqe9di0CzRst3YNA=="
+        receiver = ["miruthula@navia.co.in", "elamukil@navia.co.in", "praveen@navia.co.in"]
 
         now_str = datetime.datetime.now().strftime("%d %b %Y %I:%M %p")
 
@@ -689,7 +849,7 @@ class ReKYC_Agent:
             step_status = str(step.get("status", "FAIL"))
             reason      = str(step.get("reason", "")).strip()
             actual      = reason if step_status == "FAIL" else step.get("name", "")
-            tc_id, stage, field, neg_input, expected = get_report_meta(step_num, full_flow)
+            tc_id, stage, field, neg_input, expected = report_meta_for_step(step, full_flow)
             row_bg = "#d1fae5" if step_status == "PASS" else "#fee2e2"
             st_style, st_label = STATUS_STYLE.get(step_status, ("", step_status))
             step_html += f"""
@@ -771,13 +931,13 @@ class ReKYC_Agent:
         context = ssl.create_default_context()
 
         smtp_methods = [
-            ("smtp.gmail.com", 465,  "SSL",      "ssl"),
-            ("smtp.gmail.com", 587,  "STARTTLS",  "starttls"),
-            ("smtp.gmail.com", 25,   "STARTTLS",  "starttls"),
+            ("smtp.zatpatmail.com", 465, "SSL", "ssl"),
+            ("smtp.zatpatmail.com", 587, "STARTTLS", "starttls"),
         ]
 
-        print("  [i] Connecting to Gmail SMTP ...")
-        print("  [i] Logging in as:", sender)
+        print("  [i] Connecting to Navia SMTP ...")
+        print("  [i] Logging in as:", username)
+        print("  [i] Sending from:", sender)
         print("  [i] Sending to:", receiver)
 
         sent = False
@@ -788,23 +948,22 @@ class ReKYC_Agent:
                 print(f"  [i] Trying {host}:{port} ({label}) ...")
                 if method == "ssl":
                     with smtplib.SMTP_SSL(host, port, timeout=15, context=context) as server:
-                        server.login(sender, password)
+                        server.login(username, password)
                         server.send_message(msg)
                 else:
                     with smtplib.SMTP(host, port, timeout=15) as server:
                         server.ehlo()
                         server.starttls(context=context)
                         server.ehlo()
-                        server.login(sender, password)
+                        server.login(username, password)
                         server.send_message(msg)
                 sent = True
                 print(f"  [OK] EMAIL SENT SUCCESSFULLY via port {port}")
                 break
             except smtplib.SMTPAuthenticationError as e:
                 # Wrong password — no point retrying other ports
-                print("  [ERROR] Gmail authentication failed.")
-                print("          -> Use a Gmail App Password (not your normal password).")
-                print("          -> Generate one: https://myaccount.google.com/apppasswords")
+                print("  [ERROR] Navia SMTP authentication failed.")
+                print("          -> Check username/password for smtp.zatpatmail.com.")
                 last_error = e
                 break
             except smtplib.SMTPRecipientsRefused as e:
@@ -829,7 +988,7 @@ class ReKYC_Agent:
             print("  [WARN] WHAT TO DO:")
             print("  [WARN]   Option 1 (Recommended): Run the test on a personal hotspot")
             print("  [WARN]               or home Wi-Fi where port 587 is open.")
-            print("  [WARN]   Option 2: Ask your IT team to whitelist smtp.gmail.com:587")
+            print("  [WARN]   Option 2: Ask your IT team to whitelist smtp.zatpatmail.com:465/587")
             print("  [WARN]   Option 3: The report has been saved locally (see below).")
             print("  [WARN] ============================================================")
 
