@@ -365,6 +365,100 @@ POST_SERVICE_META.update({
     },
 })
 
+REPORT_SCENARIO_CATALOG = [
+    ('NEG-LOGIN-001', 'Login Page', 'UCC + DOB', 'Blank UCC, Blank DOB', 'Validation message; stay on login page'),
+    ('NEG-LOGIN-002', 'Login Page', 'UCC', 'Invalid UCC (INVALID123)', 'Validation/error message; stay on login page'),
+    ('NEG-LOGIN-003', 'Login Page', 'UCC + DOB', 'Valid UCC + Wrong DOB', 'Login fails; error shown; stay on login page'),
+    ('NEG-LOGIN-004', 'Login Page', 'UCC', 'Blank UCC + Valid DOB', 'Validation message; stay on login page'),
+    ('POS-LOGIN-002', 'Login Page', 'Page Refresh', 'Refresh before positive flow', 'Page reloads cleanly'),
+    ('POS-LOGIN-003', 'Login Page', 'UCC field', 'Valid UCC', 'UCC field accepts input'),
+    ('POS-LOGIN-004', 'Login Page', 'DOB Picker', 'Click DOB field', 'DOB calendar opens'),
+    ('POS-LOGIN-005', 'Login Page', 'DOB Picker', 'Valid DOB', 'DOB selected successfully'),
+    ('POS-LOGIN-006', 'Login Page', 'Submit', 'Valid UCC + DOB', 'Proceeds to OTP page'),
+    ('POS-LOGIN-007', 'Login Page', 'OTP Page URL', 'Post-login redirect', 'URL confirms OTP page loaded'),
+    ('NEG-OTP-001', 'OTP Verification', 'OTP Field', 'Blank OTP', 'Validation shown; stays on OTP page'),
+    ('NEG-OTP-002', 'OTP Verification', 'OTP Field', 'Wrong OTP (000000)', 'Error message; stays on OTP page'),
+    ('NEG-OTP-003', 'OTP Verification', 'OTP Field', 'Short OTP (123)', 'Validation; stays on OTP page'),
+    ('POS-OTP-001', 'OTP Verification', 'OTP Field', 'Valid OTP from Yopmail', 'Login succeeds; dashboard loads'),
+    ('POS-OTP-002', 'OTP Verification', 'Submit OTP', 'Submit valid OTP', 'Proceeds past OTP page'),
+    ('POS-DASH-001', 'Dashboard', 'Dashboard URL', 'Post-OTP dashboard', 'Dashboard loads successfully'),
+    ('POS-SECT-001', 'Dashboard', 'Email section', 'Click Email', 'Email section opens'),
+    ('POS-SECT-002', 'Dashboard', 'Mobile section', 'Click Mobile No', 'Mobile section opens'),
+    ('POS-SECT-003', 'Dashboard', 'Address section', 'Click Change of Address', 'Address section opens'),
+    ('POS-SECT-004', 'Dashboard', 'Nominee section', 'Click Nominee', 'Nominee section opens'),
+    ('POS-SECT-005', 'Dashboard', 'Bank section', 'Click Bank', 'Bank section opens'),
+    ('POS-SECT-006', 'Dashboard', 'Segment section', 'Click Segment', 'Segment section opens'),
+    ('POS-SECT-007', 'Dashboard', 'Income Declaration', 'Click Income Declaration', 'Section opens'),
+    ('POS-SECT-008', 'Dashboard', 'DIS Slip', 'Click Dis Slip Req', 'Section opens'),
+    ('POS-SECT-009', 'Dashboard', 'Service Status', 'Click Service Status', 'Section opens with status data'),
+    ('POS-SECT-010', 'Dashboard', 'Documents', 'Click Documents', 'Documents section loads'),
+    ('NEG-EMAIL-001', 'Email', 'Declaration checkbox', 'No declaration checked', 'Validation: must accept declaration before sending OTP'),
+    ('NEG-EMAIL-002', 'Email', 'Existing email OTP', 'Blank OTP', 'Validation shown; stays on OTP page'),
+    ('NEG-EMAIL-003', 'Email', 'Existing email OTP', 'Wrong OTP (000000)', 'Error shown; stays on OTP page'),
+    ('NEG-EMAIL-004', 'Email', 'Existing email OTP', 'Short OTP (123)', 'Validation shown; stays on OTP page'),
+    ('POS-EMAIL-001', 'Email', 'Email OTP flow', 'Valid OTP from Yopmail', 'OTP verified; new email input shown'),
+    ('POS-EMAIL-002', 'Email', 'New email OTP', 'Valid new email + OTP', 'Email updated successfully'),
+    ('EMAIL-POS-SVC-001', 'Email', 'Signature', 'Upload signature image', 'Signature accepted and saved'),
+    ('EMAIL-POS-SVC-002', 'Email', 'IPV', 'Liveness capture (blink detection)', 'IPV liveness captured successfully'),
+    ('EMAIL-POS-SVC-003', 'Email', 'KYC PDF', 'View unsigned KYC PDF', 'PDF opens in new tab'),
+    ('EMAIL-POS-SVC-004', 'Email', 'eSign', 'Proceed to Aadhaar eSign', 'Aadhaar eSign page opens'),
+    ('EMAIL-POS-SVC-005', 'Email', 'eSign OTP', 'Complete Aadhaar eSign OTP', 'eSign completed successfully'),
+    ('NEG-MOB-001', 'Mobile No', 'Declaration checkbox', 'No declaration checked', 'Validation: must accept declaration before sending OTP'),
+    ('NEG-MOB-002', 'Mobile No', 'Existing mobile OTP', 'Blank OTP', 'Validation shown; stays on OTP page'),
+    ('NEG-MOB-003', 'Mobile No', 'Existing mobile OTP', 'Wrong OTP (000000)', 'Error shown; stays on OTP page'),
+    ('NEG-MOB-004', 'Mobile No', 'Existing mobile OTP', 'Short OTP (123)', 'Validation shown; stays on OTP page'),
+    ('POS-MOB-001', 'Mobile No', 'Mobile OTP flow', 'Valid OTP from Yopmail', 'OTP verified; new mobile input shown'),
+    ('POS-MOB-002', 'Mobile No', 'New mobile OTP', 'Valid new mobile + OTP', 'Mobile updated successfully'),
+    ('MOB-POS-SVC-001', 'Mobile No', 'Signature', 'Upload signature image', 'Signature accepted and saved'),
+    ('MOB-POS-SVC-002', 'Mobile No', 'IPV', 'Liveness capture (blink detection)', 'IPV liveness captured successfully'),
+    ('MOB-POS-SVC-003', 'Mobile No', 'KYC PDF', 'View unsigned KYC PDF', 'PDF opens in new tab'),
+    ('MOB-POS-SVC-004', 'Mobile No', 'eSign', 'Proceed to Aadhaar eSign', 'Aadhaar eSign page opens'),
+    ('MOB-POS-SVC-005', 'Mobile No', 'eSign OTP', 'Complete Aadhaar eSign OTP', 'eSign completed successfully'),
+    ('NEG-ADDR-001', 'Change of Address', 'Aadhaar Input', 'Invalid Aadhaar (111111111111)', 'Validation error shown in DigiLocker'),
+    ('POS-ADDR-001', 'Change of Address', 'DigiLocker', 'Open DigiLocker', 'DigiLocker opens successfully'),
+    ('POS-ADDR-002', 'Change of Address', 'Aadhaar OTP', 'Valid Aadhaar', 'Address updated successfully'),
+    ('NEG-NOM-001', 'Nominee', 'Declaration checkbox', 'No declaration selected', 'Validation: must accept declaration'),
+    ('NEG-NOM-002', 'Nominee', 'Nominee form', 'Blank form submission', 'Required field validations shown'),
+    ('NEG-NOM-003', 'Nominee', 'PAN/Aadhaar', 'Invalid value (123)', 'Validation: invalid PAN/Aadhaar'),
+    ('NEG-NOM-004', 'Nominee', 'Mobile', 'Invalid mobile (123)', 'Validation: invalid mobile'),
+    ('NEG-NOM-005', 'Nominee', 'Share %', 'Over 100% (150)', 'Validation: cannot exceed 100%'),
+    ('NEG-NOM-006', 'Nominee', 'DOB', 'Future DOB (01-01-2099)', 'Validation: future DOB not allowed'),
+    ('NEG-NOM-007', 'Nominee', 'Email', 'Invalid email (bad-email)', 'Validation: invalid email'),
+    ('NEG-NOM-008', 'Nominee', 'Minor + Guardian', 'Minor without guardian', 'Validation: guardian required for minor'),
+    ('POS-NOM-001', 'Nominee', 'Valid nominee', 'Complete valid nominee form', 'Nominee saved successfully'),
+    ('POS-NOM-002', 'Nominee', 'Update existing', 'Modify existing nominee', 'Nominee updated successfully'),
+    ('NOM-POS-SVC-001', 'Nominee', 'Signature', 'Upload signature image', 'Signature accepted and saved'),
+    ('NOM-POS-SVC-002', 'Nominee', 'IPV', 'Liveness capture (blink detection)', 'IPV liveness captured successfully'),
+    ('NOM-POS-SVC-003', 'Nominee', 'KYC PDF', 'View unsigned KYC PDF', 'PDF opens in new tab'),
+    ('NOM-POS-SVC-004', 'Nominee', 'eSign', 'Proceed to Aadhaar eSign', 'Aadhaar eSign page opens'),
+    ('NOM-POS-SVC-005', 'Nominee', 'eSign OTP', 'Complete Aadhaar eSign OTP', 'eSign completed successfully'),
+    ('NEG-BANK-001', 'Bank', 'Account + IFSC', 'Invalid account and IFSC', 'Validation for invalid account/IFSC'),
+    ('NEG-BANK-002', 'Bank', 'Proof', 'Submit without bank proof', 'Validation: proof required'),
+    ('POS-BANK-001', 'Bank', 'Valid bank details', 'Complete valid bank + proof', 'Bank account added successfully'),
+    ('POS-BANK-002', 'Bank', 'Penny drop', 'Verify account', 'Verification success or name mismatch handled'),
+    ('BANK-POS-SVC-001', 'Bank', 'Signature', 'Upload signature image', 'Signature accepted and saved'),
+    ('BANK-POS-SVC-002', 'Bank', 'IPV', 'Liveness capture (blink detection)', 'IPV liveness captured successfully'),
+    ('BANK-POS-SVC-003', 'Bank', 'KYC PDF', 'View unsigned KYC PDF', 'PDF opens in new tab'),
+    ('BANK-POS-SVC-004', 'Bank', 'eSign', 'Proceed to Aadhaar eSign', 'Aadhaar eSign page opens'),
+    ('BANK-POS-SVC-005', 'Bank', 'eSign OTP', 'Complete Aadhaar eSign OTP', 'eSign completed successfully'),
+    ('NEG-SEG-001', 'Segment', 'No change', 'Submit without segment change', 'Validation: no change detected'),
+    ('NEG-SEG-002', 'Segment', 'BFO checkbox', 'Enable BFO without MTF terms', 'Validation: must accept MTF terms'),
+    ('POS-SEG-001', 'Segment', 'BSE derivative', 'Enable BSE derivative', 'Segment activated successfully'),
+    ('SEG-POS-SVC-001', 'Segment', 'Signature', 'Upload signature image', 'Signature accepted and saved'),
+    ('SEG-POS-SVC-002', 'Segment', 'IPV', 'Liveness capture (blink detection)', 'IPV liveness captured successfully'),
+    ('SEG-POS-SVC-003', 'Segment', 'KYC PDF', 'View unsigned KYC PDF', 'PDF opens in new tab'),
+    ('SEG-POS-SVC-004', 'Segment', 'eSign', 'Proceed to Aadhaar eSign', 'Aadhaar eSign page opens'),
+    ('SEG-POS-SVC-005', 'Segment', 'eSign OTP', 'Complete Aadhaar eSign OTP', 'eSign completed successfully'),
+    ('NEG-INC-001', 'Income Declaration', 'Income slab', 'Submit without selecting slab', 'Validation: income slab required'),
+    ('POS-INC-001', 'Income Declaration', 'Update slab', 'Select valid income slab', 'Income declaration updated successfully'),
+    ('NEG-DIS-001', 'Dis Slip Req', 'Declaration', 'Proceed without declaration', 'Validation: checkbox required'),
+    ('POS-DIS-001', 'Dis Slip Req', 'Section load', 'Open DIS Slip section', 'Section loads successfully'),
+    ('POS-DOC-001', 'Documents', 'Section load', 'Open Documents section', 'Documents section loads'),
+    ('POS-DOC-002', 'Documents', 'View proof 1', 'View uploaded document 1', 'Document opens in viewer'),
+    ('POS-DOC-003', 'Documents', 'View proof 2', 'View uploaded document 2', 'Document opens in viewer'),
+    ('POS-SS-001', 'Service Status', 'Section load', 'Open Service Status section', 'Section loads with status data'),
+]
+
 
 def python_has_pytest(python_exe):
     try:
@@ -460,7 +554,7 @@ def report_meta_for_step(step, full_flow=False):
     return get_report_meta(step.get("step", 0), full_flow)
 
 
-def unique_step_results(step_results):
+def unique_step_results(step_results, hide_hidden=True):
     results = []
     seen = set()
     service_context_index = 0
@@ -468,7 +562,7 @@ def unique_step_results(step_results):
 
     for step in step_results:
         step_num = step.get("step")
-        if step_num in REPORT_HIDDEN_PASS_STEP_NUMBERS and step.get("status") == "PASS":
+        if hide_hidden and step_num in REPORT_HIDDEN_PASS_STEP_NUMBERS and step.get("status") == "PASS":
             continue
 
         row = dict(step)
@@ -494,6 +588,110 @@ def unique_step_results(step_results):
         seen.add(step_num)
         results.append(row)
     return results
+
+
+def catalog_report_results(step_results):
+    source_results = unique_step_results(step_results, hide_hidden=False)
+    catalog_ids = {row[0] for row in REPORT_SCENARIO_CATALOG}
+    result_by_tc_id = {}
+
+    for row in source_results:
+        tc_id, _, _, _, _ = report_meta_for_step(row, False)
+        if tc_id not in catalog_ids:
+            continue
+
+        existing = result_by_tc_id.get(tc_id)
+        if existing is None:
+            result_by_tc_id[tc_id] = row
+            continue
+
+        current_status = str(row.get("status", "")).upper()
+        existing_status = str(existing.get("status", "")).upper()
+        if current_status == "FAIL" or existing_status != "FAIL":
+            result_by_tc_id[tc_id] = row
+
+    report_rows = []
+    for meta in REPORT_SCENARIO_CATALOG:
+        tc_id = meta[0]
+        if tc_id in result_by_tc_id:
+            row = dict(result_by_tc_id[tc_id])
+            row["_report_meta"] = meta
+            report_rows.append(row)
+        else:
+            report_rows.append(
+                {
+                    "step": 0,
+                    "status": "FAIL",
+                    "name": "",
+                    "reason": "Scenario result not captured in this automation run",
+                    "_report_meta": meta,
+                }
+            )
+
+    return report_rows
+
+
+def report_testcase_kind(tc_id):
+    value = str(tc_id or "").upper()
+    if value.startswith("NEG-"):
+        return "NEGATIVE"
+    if value.startswith("POS-") or "-POS-" in value:
+        return "POSITIVE"
+    return "OTHER"
+
+
+def build_report_counts(report_step_results, full_flow=False):
+    counts = {
+        "total": 0,
+        "total_passed": 0,
+        "total_failed": 0,
+        "positive_total": 0,
+        "positive_passed": 0,
+        "positive_failed": 0,
+        "negative_total": 0,
+        "negative_passed": 0,
+        "negative_failed": 0,
+    }
+
+    for step in report_step_results:
+        tc_id, _, _, _, _ = report_meta_for_step(step, full_flow)
+        kind = report_testcase_kind(tc_id)
+        status = str(step.get("status", "")).upper()
+
+        counts["total"] += 1
+        if status == "PASS":
+            counts["total_passed"] += 1
+        elif status == "FAIL":
+            counts["total_failed"] += 1
+
+        if kind == "POSITIVE":
+            counts["positive_total"] += 1
+            if status == "PASS":
+                counts["positive_passed"] += 1
+            elif status == "FAIL":
+                counts["positive_failed"] += 1
+        elif kind == "NEGATIVE":
+            counts["negative_total"] += 1
+            if status == "PASS":
+                counts["negative_passed"] += 1
+            elif status == "FAIL":
+                counts["negative_failed"] += 1
+
+    return counts
+
+
+def scenario_report_lines(report_step_results, full_flow=False):
+    lines = []
+    for step in report_step_results:
+        tc_id, stage, field, _, _ = report_meta_for_step(step, full_flow)
+        status = str(step.get("status", "FAIL")).upper()
+        reason = str(step.get("reason", "")).strip()
+        actual = reason if status == "FAIL" else str(step.get("name", "")).strip()
+        actual = " ".join(actual.split())
+        if len(actual) > 120:
+            actual = actual[:117] + "..."
+        lines.append(f"{tc_id} | {stage} | {field} | {status} | {actual}")
+    return lines
 
 
 class ReKYC_Agent:
@@ -719,11 +917,9 @@ class ReKYC_Agent:
 
         now_str    = datetime.datetime.now().strftime("%d %b %Y %I:%M %p")
         full_flow           = is_full_flow_results(step_results)
-        report_step_results = unique_step_results(step_results)
-        total_meta          = len(report_step_results)
-        passed              = sum(1 for s in report_step_results if s.get("status") == "PASS")
-        failed              = sum(1 for s in report_step_results if s.get("status") == "FAIL")
-        not_auto            = 0
+        report_step_results = catalog_report_results(step_results)
+        counts              = build_report_counts(report_step_results, full_flow)
+        scenario_lines      = scenario_report_lines(report_step_results, full_flow)
 
         status_label = "PASS" if status == "PASS" else "FAIL"
         color        = "Good" if status == "PASS" else "Attention"
@@ -733,19 +929,38 @@ class ReKYC_Agent:
             {"title": "Date",           "value": now_str},
             {"title": "Duration",       "value": duration},
             {"title": "Status",         "value": status_label},
-            {"title": "Passed",         "value": str(passed)},
-            {"title": "Failed",         "value": str(failed)},
-            {"title": "Not Automated",  "value": str(not_auto)},
-            {"title": "Total Tests",    "value": str(total_meta)},
+            {"title": "Total Testcases", "value": str(counts["total"])},
+            {"title": "Positive Testcases", "value": str(counts["positive_total"])},
+            {"title": "Negative Testcases", "value": str(counts["negative_total"])},
+            {"title": "Total Passed",   "value": str(counts["total_passed"])},
+            {"title": "Total Failed",   "value": str(counts["total_failed"])},
+            {"title": "Positive Passed", "value": str(counts["positive_passed"])},
+            {"title": "Positive Failed", "value": str(counts["positive_failed"])},
+            {"title": "Negative Passed", "value": str(counts["negative_passed"])},
+            {"title": "Negative Failed", "value": str(counts["negative_failed"])},
             {"title": "Code Review",    "value": code_review_status},
         ]
 
-        # Add failed step details
-        failed_steps = [s for s in report_step_results if s.get("status") == "FAIL"]
-        for s in failed_steps:
-            tc_id, stage, _, _, _ = report_meta_for_step(s, full_flow)
-            reason = str(s.get("reason", "")).strip()[:100] or "No reason captured"
-            facts.append({"title": tc_id, "value": f"{stage} -- {reason}"})
+        scenario_blocks = [
+            {
+                "type": "TextBlock",
+                "text": "Scenario Results",
+                "weight": "Bolder",
+                "wrap": True,
+                "spacing": "Medium",
+            }
+        ]
+        for index in range(0, len(scenario_lines), 20):
+            scenario_blocks.append(
+                {
+                    "type": "TextBlock",
+                    "text": "\n".join(scenario_lines[index:index + 20]),
+                    "wrap": True,
+                    "fontType": "Monospace",
+                    "size": "Small",
+                    "spacing": "Small",
+                }
+            )
 
         # Full Adaptive Card payload -- required schema for
         # "Send webhook alerts to a channel" Power Automate template
@@ -766,6 +981,7 @@ class ReKYC_Agent:
                     "type": "FactSet",
                     "facts": facts,
                 },
+                *scenario_blocks,
             ],
         }
 
@@ -831,11 +1047,11 @@ class ReKYC_Agent:
         now_str = datetime.datetime.now().strftime("%d %b %Y %I:%M %p")
 
         full_flow           = is_full_flow_results(step_results)
-        report_step_results = unique_step_results(step_results)
-        total               = len(report_step_results)
-        passed              = sum(1 for s in report_step_results if s.get("status") == "PASS")
-        failed              = sum(1 for s in report_step_results if s.get("status") == "FAIL")
-        not_automated       = 0
+        report_step_results = catalog_report_results(step_results)
+        counts              = build_report_counts(report_step_results, full_flow)
+        total               = counts["total"]
+        passed              = counts["total_passed"]
+        failed              = counts["total_failed"]
 
         STATUS_STYLE = {
             "PASS":          ("background:#d1fae5;color:#065f46;font-weight:600", "PASS"),
@@ -877,6 +1093,34 @@ class ReKYC_Agent:
         badge_bg    = "#d1fae5" if status == "PASS" else "#fee2e2"
         video_line  = "Attached to this email." if video_path else "No video recorded."
 
+        summary_html = f"""
+    <table style="width:100%;border-collapse:collapse;margin-top:12px;font-size:13px">
+      <tr>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;background:#f9fafb;font-weight:600">Total Testcases</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb">{counts["total"]}</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;background:#f9fafb;font-weight:600">Total Passed</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;color:#065f46;font-weight:600">{counts["total_passed"]}</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;background:#f9fafb;font-weight:600">Total Failed</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;color:#991b1b;font-weight:600">{counts["total_failed"]}</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;background:#f9fafb;font-weight:600">Positive Testcases</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb">{counts["positive_total"]}</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;background:#f9fafb;font-weight:600">Positive Passed</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;color:#065f46;font-weight:600">{counts["positive_passed"]}</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;background:#f9fafb;font-weight:600">Positive Failed</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;color:#991b1b;font-weight:600">{counts["positive_failed"]}</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;background:#f9fafb;font-weight:600">Negative Testcases</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb">{counts["negative_total"]}</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;background:#f9fafb;font-weight:600">Negative Passed</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;color:#065f46;font-weight:600">{counts["negative_passed"]}</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;background:#f9fafb;font-weight:600">Negative Failed</td>
+        <td style="padding:7px 10px;border:1px solid #e5e7eb;color:#991b1b;font-weight:600">{counts["negative_failed"]}</td>
+      </tr>
+    </table>"""
+
         email_html = f"""<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"></head>
@@ -887,14 +1131,15 @@ class ReKYC_Agent:
   </div>
   <div style="background:#fff;border:1px solid #e5e7eb;border-top:none;padding:14px 24px;">
     <span style="font-size:14px;font-weight:600;color:#374151">
-      Total: <strong>{total + not_automated}</strong>
+      Total Testcases: <strong>{total}</strong>
       &nbsp;|&nbsp; Pass: <strong style="color:#065f46">{passed}</strong>
       &nbsp;|&nbsp; Fail: <strong style="color:#991b1b">{failed}</strong>
-      &nbsp;|&nbsp; Not Automated: <strong style="color:#92400e">{not_automated}</strong>
     </span>
     <span style="float:right;padding:5px 16px;border-radius:5px;background:{badge_bg};color:{badge_color};font-weight:700;font-size:14px">
       Overall: {html.escape(status)}
     </span>
+    <div style="clear:both"></div>
+    {summary_html}
   </div>
   <div style="overflow-x:auto">
     <table style="width:100%;border-collapse:collapse;font-size:13px;background:#fff;border:1px solid #d1d5db;border-top:none">
