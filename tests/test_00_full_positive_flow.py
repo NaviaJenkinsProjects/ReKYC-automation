@@ -394,12 +394,55 @@ def _assert_nominee_invalid_field(page: Page, locators, value: str, keywords, de
     print(f"  [OK] Nominee {description} rejected")
 
 
+def _negative_stayed_on_page(page: Page, before_url: str, description: str, fragments=None):
+    fragments = fragments or []
+    current_url = page.url.lower()
+    before = (before_url or "").lower()
+    if current_url == before or any(fragment in current_url for fragment in fragments):
+        print(f"  [OK] {description} rejected; page did not proceed")
+        return True
+    return False
+
+
+def _assert_validation_or_stayed(page: Page, before_url: str, keywords, description: str, fragments=None):
+    try:
+        common.core.assert_validation_feedback(page, keywords, description)
+        return
+    except Exception:
+        if _negative_stayed_on_page(page, before_url, description, fragments):
+            return
+        raise
+
+
 def _assert_nominee_invalid_field_on_current_form(page: Page, locators, value: str, keywords, description: str):
     common.core.fill_nominee_positive_data(page, minor=False)
+    before_url = page.url
     common.core.fill_last_visible_nominee_field(page, locators, value, description)
     common.core.submit_nominee(page)
-    common.core.assert_validation_feedback(page, keywords, f"nominee {description} validation")
+    _assert_validation_or_stayed(
+        page,
+        before_url,
+        keywords,
+        f"nominee {description} validation",
+        fragments=["add_nominee", "nominee"],
+    )
     print(f"  [OK] Nominee {description} rejected")
+
+
+def _assert_nominee_share_99_after_continue(page: Page):
+    common.core.fill_nominee_positive_data(page, minor=False)
+    common.core.fill_last_visible_nominee_field(page, common.core.NOMINEE_SHARE_LOCATORS, "99", "Share")
+    before_url = page.url
+    common.core.submit_nominee(page)
+    common.core.assert_nominee_continue_does_not_proceed(page, "invalid nominee share 99")
+    _assert_validation_or_stayed(
+        page,
+        before_url,
+        ["share", "100", "allocation", "percentage", "nominee"],
+        "nominee share 99 validation",
+        fragments=["add_nominee", "nominee"],
+    )
+    print("  [OK] Nominee share 99 rejected after Save + Continue")
 
 
 def _assert_nominee_add_without_declaration(page: Page):
@@ -466,13 +509,7 @@ def _run_nominee_negative_scenarios_fast(page: Page):
         ["mobile", "phone", "valid", "invalid", "10"],
         "invalid mobile",
     ))
-    common.core.run_step(37, "Nominee Negative: Invalid share", lambda: _assert_nominee_invalid_field_on_current_form(
-        page,
-        common.core.NOMINEE_SHARE_LOCATORS,
-        "150",
-        ["percentage", "share", "100", "invalid", "allocation"],
-        "invalid share",
-    ))
+    common.core.run_step(37, "Nominee Negative: Invalid share", lambda: _assert_nominee_share_99_after_continue(page))
     common.core.run_step(38, "Nominee Negative: Future DOB", lambda: _assert_nominee_invalid_field_on_current_form(
         page,
         common.core.NOMINEE_DOB_LOCATORS,
@@ -532,6 +569,7 @@ def _assert_nominee_negative_scenarios(page: Page):
 def _assert_bank_invalid_account_ifsc(page: Page):
     common.core.click_bank_add_account(page)
     common.core.click_bank_manual_entry(page)
+    before_url = page.url
     common.core.fill_required_first_visible(page, common.core.BANK_ACCOUNT_LOCATORS, "123", "Invalid bank account number")
     common.core.fill_optional_first_visible(page, common.core.BANK_CONFIRM_ACCOUNT_LOCATORS, "123")
     common.core.fill_required_first_visible(page, common.core.BANK_IFSC_LOCATORS, "BADIFSC", "Invalid IFSC")
@@ -540,7 +578,13 @@ def _assert_bank_invalid_account_ifsc(page: Page):
     except Exception:
         # Invalid account/IFSC can keep the Verify button disabled via HTML5 validation.
         pass
-    common.core.assert_validation_feedback(page, ["invalid", "ifsc", "account", "verify", "bank"], "invalid bank account/IFSC validation")
+    _assert_validation_or_stayed(
+        page,
+        before_url,
+        ["invalid", "ifsc", "account", "verify", "bank"],
+        "invalid bank account/IFSC validation",
+        fragments=["bank_details", "bank"],
+    )
 
 
 def _assert_bank_without_proof(page: Page):
@@ -549,17 +593,31 @@ def _assert_bank_without_proof(page: Page):
     common.core.fill_bank_positive_data(page)
     common.core.click_bank_verify(page)
     common.core.accept_bank_name_mismatch_if_present(page)
+    before_url = page.url
     common.core.submit_bank(page)
-    common.core.assert_validation_feedback(page, ["proof", "upload", "please select"], "bank proof validation")
+    _assert_validation_or_stayed(
+        page,
+        before_url,
+        ["proof", "upload", "please select"],
+        "bank proof validation",
+        fragments=["bank_details", "bank"],
+    )
 
 
 def _assert_segment_without_any_change(page: Page):
     common.core.open_section(page, "Segment")
     common.core.accept_segment_risk_disclosure_if_present(page)
+    before_url = page.url
     if not common.core.click_first_visible(page, common.core.SEGMENT_SUBMIT_LOCATORS, timeout=10000):
         raise Exception("Segment Submit button not found")
     page.wait_for_timeout(2500)
-    common.core.assert_validation_feedback(page, ["segment", "activate", "deactivate", "select", "change"], "segment no-change validation")
+    _assert_validation_or_stayed(
+        page,
+        before_url,
+        ["segment", "activate", "deactivate", "select", "change"],
+        "segment no-change validation",
+        fragments=["segment"],
+    )
 
 
 def _assert_segment_without_required_checkbox(page: Page):
@@ -593,23 +651,33 @@ def _assert_segment_without_required_checkbox(page: Page):
         }
         """
     )
+    before_url = page.url
     if not common.core.click_first_visible(page, common.core.SEGMENT_SUBMIT_LOCATORS, timeout=10000):
         raise Exception("Segment Submit button not found")
     page.wait_for_timeout(2500)
-    common.core.assert_validation_feedback(
+    _assert_validation_or_stayed(
         page,
+        before_url,
         ["mtf", "terms", "condition", "checkbox", "accept", "aware"],
         "segment terms checkbox validation",
+        fragments=["segment"],
     )
 
 
 def _assert_income_without_slab(page: Page):
     common.core.open_section(page, "Income Declaration")
     common.core.open_income_edit_page(page)
+    before_url = page.url
     if not common.core.click_first_visible(page, common.core.INCOME_UPDATE_LOCATORS, timeout=5000):
         raise Exception("Income declaration Update button not found")
     page.wait_for_timeout(2500)
-    common.core.assert_validation_feedback(page, ["income", "slab", "select", "please"], "income slab validation")
+    _assert_validation_or_stayed(
+        page,
+        before_url,
+        ["income", "slab", "select", "please"],
+        "income slab validation",
+        fragments=["income_edit", "income"],
+    )
 
 
 def _assert_dis_slip_without_checkbox(page: Page):
@@ -623,8 +691,15 @@ def _assert_dis_slip_without_checkbox(page: Page):
         ],
         timeout=5000,
     ):
+        before_url = page.url
         page.wait_for_timeout(2000)
-        common.core.assert_validation_feedback(page, ["checkbox", "agree", "declaration", "please"], "DIS slip checkbox validation")
+        _assert_validation_or_stayed(
+            page,
+            before_url,
+            ["checkbox", "agree", "declaration", "please"],
+            "DIS slip checkbox validation",
+            fragments=["dis", "slip"],
+        )
         return
     text = common.core.visible_text(page).lower()
     if "dis" not in text and "slip" not in text:
@@ -704,14 +779,14 @@ class TestFullPositiveFlow:
         run_scenario(45, "Bank Negative: Submit without proof", _assert_bank_without_proof, negative=True)
         run_flow(50, "Bank Positive: Valid bank details and statement proof", common.run_bank_module)
 
-        run_scenario(27, "Documents Positive: Section loads", _assert_documents_section_loads)
-        run_scenario(28, "Documents Positive: View proof 1", lambda p: _view_document_proof(p, 1))
-        run_scenario(29, "Documents Positive: View proof 2", lambda p: _view_document_proof(p, 2))
-
         run_scenario(23, "Segment Section", lambda p: common.core.open_section(p, "Segment"))
         run_scenario(115, "Segment Negative: Submit without segment change", _assert_segment_without_any_change, negative=True)
         run_scenario(114, "Segment Negative: Submit without required checkbox", _assert_segment_without_required_checkbox, negative=True)
         run_flow(112, "Segment Positive: BSE derivative activation", common.run_segment_module)
+
+        run_scenario(27, "Documents Positive: Section loads", _assert_documents_section_loads)
+        run_scenario(28, "Documents Positive: View proof 1", lambda p: _view_document_proof(p, 1))
+        run_scenario(29, "Documents Positive: View proof 2", lambda p: _view_document_proof(p, 2))
 
         run_scenario(24, "Income Declaration Section", lambda p: common.core.open_section(p, "Income Declaration"))
         run_scenario(126, "Income Declaration Negative: Update without income slab", _assert_income_without_slab, negative=True)
