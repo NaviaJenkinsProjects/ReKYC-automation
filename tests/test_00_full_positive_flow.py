@@ -249,6 +249,7 @@ def _run_login_scenarios(page: Page):
             raise Exception("Still on OTP page after valid login OTP submit")
         if not common.core.is_logged_in_dashboard(page):
             raise Exception(f"Dashboard did not load after login. Current URL: {page.url}")
+        common.core.assert_required_rekyc_sections_available(page)
 
     common.core.run_step(15, "Positive OTP: Valid OTP from Yopmail", submit_valid_otp)
 
@@ -405,13 +406,7 @@ def _negative_stayed_on_page(page: Page, before_url: str, description: str, frag
 
 
 def _assert_validation_or_stayed(page: Page, before_url: str, keywords, description: str, fragments=None):
-    try:
-        common.core.assert_validation_feedback(page, keywords, description)
-        return
-    except Exception:
-        if _negative_stayed_on_page(page, before_url, description, fragments):
-            return
-        raise
+    common.core.assert_validation_feedback(page, keywords, description)
 
 
 def _assert_nominee_invalid_field_on_current_form(page: Page, locators, value: str, keywords, description: str):

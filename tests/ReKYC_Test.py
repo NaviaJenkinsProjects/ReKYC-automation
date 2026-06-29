@@ -447,6 +447,43 @@ def visible_text(page):
     except Exception:
         return ""
 
+def visible_menu_links(page):
+    try:
+        return page.locator("a:visible").evaluate_all(
+            "els => els.map(e => (e.innerText || e.textContent || '').trim()).filter(Boolean)"
+        )
+    except Exception:
+        return []
+
+
+def assert_required_rekyc_sections_available(page, required_sections=None):
+    required_sections = required_sections or [
+        "Email",
+        "Mobile No",
+        "Change of address",
+        "Nominee",
+        "Bank",
+        "Segment",
+        "Income Declaration",
+        "Documents",
+        "Dis Slip Req",
+        "Service Status",
+    ]
+    visible_links = visible_menu_links(page)
+    normalized_links = [link.lower() for link in visible_links]
+    missing = []
+    for section in required_sections:
+        expected = section.lower()
+        if not any(expected in link for link in normalized_links):
+            missing.append(section)
+    if missing:
+        available_text = ", ".join(visible_links[:12]) if visible_links else "no visible menu links"
+        raise Exception(
+            "Required ReKYC sections are not available for this account. "
+            f"Missing: {', '.join(missing)}. Visible sections: {available_text}"
+        )
+
+
 def debug_page_state(page, description=""):
     """Print detailed page state for debugging button click issues"""
     print(f"\n  [DEBUG] ========== Page State: {description} ==========")
@@ -520,9 +557,8 @@ def assert_input_value(page_or_frame, locators, expected_value, description, tim
 
 def assert_validation_feedback(page, expected_keywords=None, description="validation"):
     """
-    For negative scenarios, visible validation is helpful evidence but not mandatory.
-    Callers already verify that the app did not proceed; if no message is rendered,
-    keep the scenario passed and log that the page stayed blocked without feedback.
+    Require visible validation evidence for negative scenarios.
+    Staying on the same URL alone is not enough to mark a validation test as PASS.
     """
     expected_keywords = [k.lower() for k in (expected_keywords or [])]
     feedback_selectors = [
@@ -575,25 +611,23 @@ def assert_validation_feedback(page, expected_keywords=None, description="valida
         messages.append("Expected validation keyword found in page text")
 
     if not messages:
-        print(f"  [OK] {description}: no visible validation text, but scenario remained blocked")
-        return
+        raise Exception(f"{description}: expected validation feedback was not visible")
 
     print("  [OK] Validation feedback detected:", " | ".join(messages[:3]))
 
 
 def open_section(page, link_text, wait_time=2000):
     clear_blocking_overlays(page)
-    before_url = page.url
     fallback = SECTION_FALLBACK_URLS.get(link_text)
     link = page.locator(f"//a[normalize-space()='{link_text}' or contains(normalize-space(),'{link_text}')]").first
     try:
         link.wait_for(state="visible", timeout=10000)
     except Exception:
-        if fallback:
-            page.goto(urljoin(REKYC_URL, fallback), wait_until="domcontentloaded")
-            page.wait_for_timeout(wait_time)
-            return
-        raise
+        visible_links = visible_menu_links(page)
+        available_text = ", ".join(visible_links[:12]) if visible_links else "no visible menu links"
+        raise Exception(
+            f"{link_text} section is not available for this account. Visible sections: {available_text}"
+        )
     href = link.get_attribute("href")
 
     if href and not href.startswith("#") and "javascript:" not in href.lower():
@@ -614,14 +648,6 @@ def open_section(page, link_text, wait_time=2000):
     except Exception:
         page_text = visible_text(page).lower()
     expected_url_part = (fallback or link_text).replace(" ", "_").lower()
-
-    if fallback and expected_url_part not in page.url.lower() and link_text.lower() not in page_text:
-        page.goto(urljoin(page.url, fallback), wait_until="domcontentloaded")
-        page.wait_for_timeout(wait_time)
-        try:
-            page_text = page.locator("h1, h2, h3, h4, legend, .card-title, .page-title").inner_text(timeout=3000).lower()
-        except Exception:
-            page_text = visible_text(page).lower()
 
     if expected_url_part not in page.url.lower() and link_text.lower() not in page_text:
         raise Exception(f"{link_text} section did not load or display expected text")
@@ -5727,6 +5753,7 @@ def check_still_on_otp(page):
 # -----------------------------------------------------------------------------
 
 class TestReKYC:
+    __test__ = False  # Legacy helper flow; do not collect with pytest.
 
     def test_rekyc_flow(self, page: Page):
 

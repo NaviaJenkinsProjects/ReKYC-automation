@@ -847,6 +847,7 @@ class ReKYC_Agent:
         missing_steps = [step for step in expected_steps if step not in run_step_nums]
         if missing_steps:
             print("  [WARN] Missing automated step rows (reported as NOT_AUTOMATED):", missing_steps)
+            return "FAIL"
         return "PASS"
 
     # -------------------------------------------------------------------------
