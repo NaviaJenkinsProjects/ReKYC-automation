@@ -14,8 +14,14 @@
   {
     "step": 3,
     "name": "Negative login: Valid UCC and invalid DOB",
-    "status": "FAIL",
-    "reason": "wrong DOB validation: expected validation feedback was not visible"
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 5,
+    "name": "Negative login: Blank UCC with valid DOB",
+    "status": "PASS",
+    "reason": ""
   },
   {
     "step": 4,
@@ -146,8 +152,8 @@
   {
     "step": 68,
     "name": "Mobile Positive: Complete mobile OTP flow using E-mail OTP",
-    "status": "FAIL",
-    "reason": "Mobile new stayed on OTP page after valid OTP submit"
+    "status": "PASS",
+    "reason": ""
   },
   {
     "step": 70,
@@ -158,19 +164,211 @@
   {
     "step": 72,
     "name": "Service Post-OTP: ReKYC live IPV liveness capture (blink detection)",
-    "status": "FAIL",
-    "reason": "Page.wait_for_timeout: Target page, context or browser has been closed"
+    "status": "PASS",
+    "reason": ""
   },
   {
     "step": 71,
     "name": "Service Post-OTP: View unsigned KYC PDF",
-    "status": "FAIL",
-    "reason": "Page.wait_for_timeout: Target page, context or browser has been closed"
+    "status": "PASS",
+    "reason": ""
   },
   {
     "step": 73,
     "name": "Service Post-OTP: Proceed to Aadhaar eSign",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 74,
+    "name": "Service Post-OTP: Complete Aadhaar eSign OTP",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 20,
+    "name": "Address Section",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 21,
+    "name": "Nominee Section",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 97,
+    "name": "Nominee Negative: Add nominee without declaration",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 32,
+    "name": "Nominee Negative: Submit blank nominee form",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 33,
+    "name": "Nominee Negative: Invalid PAN/Aadhaar",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 35,
+    "name": "Nominee Negative: Invalid mobile",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 37,
+    "name": "Nominee Negative: Invalid share",
     "status": "FAIL",
-    "reason": "Page.wait_for_timeout: Target page, context or browser has been closed"
+    "reason": "Continue proceeded to e-Sign flow unexpectedly for invalid nominee share 99"
+  },
+  {
+    "step": 38,
+    "name": "Nominee Negative: Future DOB",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 39,
+    "name": "Nominee Negative: Invalid email",
+    "status": "FAIL",
+    "reason": "Nominee editor did not open"
+  },
+  {
+    "step": 40,
+    "name": "Nominee Negative: Minor nominee without guardian",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 41,
+    "name": "Nominee Positive: Valid nominee details",
+    "status": "FAIL",
+    "reason": "Aadhaar eSign OTP not found in the latest 10 Yopmail email(s). Last email preview: "
+  },
+  {
+    "step": 22,
+    "name": "Bank Section",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 46,
+    "name": "Bank Negative: Invalid account number and IFSC",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 45,
+    "name": "Bank Negative: Submit without proof",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 50,
+    "name": "Bank Positive: Valid bank details and statement proof",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 70,
+    "name": "Service Post-OTP: Upload signature",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 72,
+    "name": "Service Post-OTP: ReKYC live IPV liveness capture (blink detection)",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 71,
+    "name": "Service Post-OTP: View unsigned KYC PDF",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 73,
+    "name": "Service Post-OTP: Proceed to Aadhaar eSign",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 74,
+    "name": "Service Post-OTP: Complete Aadhaar eSign OTP",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 23,
+    "name": "Segment Section",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 115,
+    "name": "Segment Negative: Submit without segment change",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 114,
+    "name": "Segment Negative: Submit without required checkbox",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 27,
+    "name": "Documents Positive: Section loads",
+    "status": "FAIL",
+    "reason": "Page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://rekyc.navia.co.in/client_dashboard.php\", waiting until \"domcontentloaded\"\n"
+  },
+  {
+    "step": 28,
+    "name": "Documents Positive: View proof 1",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 29,
+    "name": "Documents Positive: View proof 2",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 24,
+    "name": "Income Declaration Section",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 126,
+    "name": "Income Declaration Negative: Update without income slab",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 25,
+    "name": "DIS Slip Section",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 127,
+    "name": "DIS Slip Negative: Declaration/proceed validation",
+    "status": "PASS",
+    "reason": ""
+  },
+  {
+    "step": 26,
+    "name": "Service Status positive check",
+    "status": "PASS",
+    "reason": ""
   }
 ]

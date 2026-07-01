@@ -89,7 +89,9 @@ def run_segment_module(page: Page):
 
 
 def run_bank_module(page: Page):
+    core.open_section(page, "Bank")
     core.run_bank_module(page)
+    complete_common_signature_ipv_esign(page)
 
 
 def block_manual_or_data_dependent(module_name: str, reason: str):

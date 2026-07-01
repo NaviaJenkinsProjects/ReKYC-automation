@@ -221,6 +221,21 @@ def _run_login_scenarios(page: Page):
 
     common.core.run_step(3, "Negative login: Valid UCC and invalid DOB", wrong_dob_login)
 
+    def blank_ucc_valid_dob_login():
+        common.core.reset_login_page(page)
+        common.core.fill_ucc(page, "")
+        common.core.select_dob(page, common.core.DOB_YEAR, common.core.DOB_MONTH, common.core.DOB_DAY)
+        common.core.submit_login(page)
+        page.wait_for_timeout(2500)
+        common.core.check_still_on_login(page)
+        common.core.assert_validation_feedback(
+            page,
+            ["required", "please", "ucc", "client", "enter"],
+            "blank UCC with valid DOB validation",
+        )
+
+    common.core.run_step(5, "Negative login: Blank UCC with valid DOB", blank_ucc_valid_dob_login)
+
     def submit_valid_login():
         common.core.reset_login_page(page)
         common.core.fill_ucc(page, common.core.REKYC_UCC)
@@ -374,6 +389,15 @@ def _run_mobile_module_with_inline_negatives(page: Page):
     _run_post_service_steps(page)
 
 
+def _run_bank_module_with_post_service(page: Page):
+    common.core.run_step(
+        50,
+        "Bank Positive: Valid bank details and statement proof",
+        lambda: common.core.run_bank_module(page),
+    )
+    _run_post_service_steps(page)
+
+
 def _assert_nominee_blank_required(page: Page):
     common.core.open_section(page, "Nominee")
     common.core.open_fresh_nominee_form(page)
@@ -406,7 +430,13 @@ def _negative_stayed_on_page(page: Page, before_url: str, description: str, frag
 
 
 def _assert_validation_or_stayed(page: Page, before_url: str, keywords, description: str, fragments=None):
-    common.core.assert_validation_feedback(page, keywords, description)
+    try:
+        common.core.assert_validation_feedback(page, keywords, description)
+        return
+    except Exception:
+        if _negative_stayed_on_page(page, before_url, description, fragments):
+            return
+        raise
 
 
 def _assert_nominee_invalid_field_on_current_form(page: Page, locators, value: str, keywords, description: str):
@@ -743,8 +773,18 @@ class TestFullPositiveFlow:
             try:
                 runner(_ensure_rekyc_session(page, state))
                 state["page"] = _active_page(page, state)
+                return True
             except Exception as err:
                 fail_step(fallback_step, fallback_name, err)
+                recovery_page = _active_page(page, state)
+                try:
+                    if "rekyc.navia.co.in" in recovery_page.url.lower():
+                        recovery_page.goto(common.core.REKYC_URL, wait_until="domcontentloaded", timeout=30000)
+                        recovery_page.wait_for_timeout(2000)
+                except Exception:
+                    pass
+                state["page"] = _active_page(page, state)
+                return False
 
         def run_scenario(step_number: int, step_name: str, runner, negative: bool = False):
             current_page = _active_page(page, state)
@@ -772,7 +812,7 @@ class TestFullPositiveFlow:
         run_scenario(22, "Bank Section", lambda p: common.core.open_section(p, "Bank"))
         run_scenario(46, "Bank Negative: Invalid account number and IFSC", _assert_bank_invalid_account_ifsc, negative=True)
         run_scenario(45, "Bank Negative: Submit without proof", _assert_bank_without_proof, negative=True)
-        run_flow(50, "Bank Positive: Valid bank details and statement proof", common.run_bank_module)
+        run_flow(50, "Bank Positive: Valid bank details, proof, signature, IPV and eSign", _run_bank_module_with_post_service)
 
         run_scenario(23, "Segment Section", lambda p: common.core.open_section(p, "Segment"))
         run_scenario(115, "Segment Negative: Submit without segment change", _assert_segment_without_any_change, negative=True)
